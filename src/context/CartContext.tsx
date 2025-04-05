@@ -139,7 +139,10 @@ type CartContextType = CartState & {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [state, dispatch] = useReducer(cartReducer, loadState());
+  // Fix: Move the initial state loading logic inside the component
+  const [state, dispatch] = useReducer(cartReducer, initialState, () => {
+    return loadState();
+  });
 
   // Save to localStorage whenever state changes
   useEffect(() => {
